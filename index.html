@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta name="xfy-loader" content="true" />
+    <link rel="icon" type="image/png" href="https://xfyweb.cn/background.jpg" />
+    <link rel="apple-touch-icon" href="https://xfyweb.cn/background.jpg" />
+    <title>加载中……</title>
+  <style>
+  body {
+    background-color: #E8E8E8;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  /* 加载动画容器 */
+  .loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E8E8E8;
+    z-index: 9999;
+  }
+
+  .loader {
+  --duration: 3s;
+  --primary: rgb(0, 204, 255);
+  --primary-light: #00a6ff;
+  --primary-rgba: rgba(204, 0, 255, 0.04);
+  width: 200px;
+  height: 320px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+@media (max-width: 480px) {
+  .loader {
+    zoom: 0.44;
+  }
+}
+
+.loader:before, .loader:after {
+  --r: 20.5deg;
+  content: "";
+  width: 320px;
+  height: 140px;
+  position: absolute;
+  right: 32%;
+  bottom: -11px;
+  /* change the back groung color on switching from light to dark mood */
+  background: #e8e8e8;
+  transform: translateZ(200px) rotate(var(--r));
+  -webkit-animation: mask var(--duration) linear forwards infinite;
+  animation: mask var(--duration) linear forwards infinite;
+}
+
+.loader:after {
+  --r: -20.5deg;
+  right: auto;
+  left: 32%;
+}
+
+.loader .ground {
+  position: absolute;
+  left: -50px;
+  bottom: -120px;
+  transform-style: preserve-3d;
+  transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+}
+
+.loader .ground div {
+  transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(0);
+  width: 200px;
+  height: 200px;
+  background: var(--primary);
+  background: linear-gradient(45deg, var(--primary) 0%, var(--primary) 50%, var(--primary-light) 50%, var(--primary-light) 100%);
+  transform-style: preserve-3d;
+  -webkit-animation: ground var(--duration) linear forwards infinite;
+  animation: ground var(--duration) linear forwards infinite;
+}
+
+.loader .ground div:before, .loader .ground div:after {
+  --rx: 90deg;
+  --ry: 0deg;
+  --x: 44px;
+  --y: 162px;
+  --z: -50px;
+  content: "";
+  width: 156px;
+  height: 300px;
+  opacity: 0;
+  background: linear-gradient(var(--primary), var(--primary-rgba));
+  position: absolute;
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) translate(var(--x), var(--y)) translateZ(var(--z));
+  -webkit-animation: ground-shine var(--duration) linear forwards infinite;
+  animation: ground-shine var(--duration) linear forwards infinite;
+}
+
+.loader .ground div:after {
+  --rx: 90deg;
+  --ry: 90deg;
+  --x: 0;
+  --y: 177px;
+  --z: 150px;
+}
+
+.loader .box {
+  --x: 0;
+  --y: 0;
+  position: absolute;
+  -webkit-animation: var(--duration) linear forwards infinite;
+  animation: var(--duration) linear forwards infinite;
+  transform: translate(var(--x), var(--y));
+}
+
+.loader .box div {
+  background-color: var(--primary);
+  width: 48px;
+  height: 48px;
+  position: relative;
+  transform-style: preserve-3d;
+  -webkit-animation: var(--duration) ease forwards infinite;
+  animation: var(--duration) ease forwards infinite;
+  transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+}
+
+.loader .box div:before, .loader .box div:after {
+  --rx: 90deg;
+  --ry: 0deg;
+  --z: 24px;
+  --y: -24px;
+  --x: 0;
+  content: "";
+  position: absolute;
+  background-color: inherit;
+  width: inherit;
+  height: inherit;
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) translate(var(--x), var(--y)) translateZ(var(--z));
+  filter: brightness(var(--b, 1.2));
+}
+
+.loader .box div:after {
+  --rx: 0deg;
+  --ry: 90deg;
+  --x: 24px;
+  --y: 0;
+  --b: 1.4;
+}
+
+.loader .box.box0 {
+  --x: -220px;
+  --y: -120px;
+  left: 58px;
+  top: 108px;
+}
+
+.loader .box.box1 {
+  --x: -260px;
+  --y: 120px;
+  left: 25px;
+  top: 120px;
+}
+
+.loader .box.box2 {
+  --x: 120px;
+  --y: -190px;
+  left: 58px;
+  top: 64px;
+}
+
+.loader .box.box3 {
+  --x: 280px;
+  --y: -40px;
+  left: 91px;
+  top: 120px;
+}
+
+.loader .box.box4 {
+  --x: 60px;
+  --y: 200px;
+  left: 58px;
+  top: 132px;
+}
+
+.loader .box.box5 {
+  --x: -220px;
+  --y: -120px;
+  left: 25px;
+  top: 76px;
+}
+
+.loader .box.box6 {
+  --x: -260px;
+  --y: 120px;
+  left: 91px;
+  top: 76px;
+}
+
+.loader .box.box7 {
+  --x: -240px;
+  --y: 200px;
+  left: 58px;
+  top: 87px;
+}
+
+.loader .box0 {
+  -webkit-animation-name: box-move0;
+  animation-name: box-move0;
+}
+
+.loader .box0 div {
+  -webkit-animation-name: box-scale0;
+  animation-name: box-scale0;
+}
+
+.loader .box1 {
+  -webkit-animation-name: box-move1;
+  animation-name: box-move1;
+}
+
+.loader .box1 div {
+  -webkit-animation-name: box-scale1;
+  animation-name: box-scale1;
+}
+
+.loader .box2 {
+  -webkit-animation-name: box-move2;
+  animation-name: box-move2;
+}
+
+.loader .box2 div {
+  -webkit-animation-name: box-scale2;
+  animation-name: box-scale2;
+}
+
+.loader .box3 {
+  -webkit-animation-name: box-move3;
+  animation-name: box-move3;
+}
+
+.loader .box3 div {
+  -webkit-animation-name: box-scale3;
+  animation-name: box-scale3;
+}
+
+.loader .box4 {
+  -webkit-animation-name: box-move4;
+  animation-name: box-move4;
+}
+
+.loader .box4 div {
+  -webkit-animation-name: box-scale4;
+  animation-name: box-scale4;
+}
+
+.loader .box5 {
+  -webkit-animation-name: box-move5;
+  animation-name: box-move5;
+}
+
+.loader .box5 div {
+  -webkit-animation-name: box-scale5;
+  animation-name: box-scale5;
+}
+
+.loader .box6 {
+  -webkit-animation-name: box-move6;
+  animation-name: box-move6;
+}
+
+.loader .box6 div {
+  -webkit-animation-name: box-scale6;
+  animation-name: box-scale6;
+}
+
+.loader .box7 {
+  -webkit-animation-name: box-move7;
+  animation-name: box-move7;
+}
+
+.loader .box7 div {
+  -webkit-animation-name: box-scale7;
+  animation-name: box-scale7;
+}
+
+@-webkit-keyframes box-move0 {
+  12% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  25%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move0 {
+  12% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  25%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale0 {
+  6% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  14%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale0 {
+  6% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  14%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes box-move1 {
+  16% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  29%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move1 {
+  16% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  29%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale1 {
+  10% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  18%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale1 {
+  10% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  18%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes box-move2 {
+  20% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  33%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move2 {
+  20% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  33%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale2 {
+  14% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  22%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale2 {
+  14% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  22%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes box-move3 {
+  24% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  37%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move3 {
+  24% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  37%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale3 {
+  18% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  26%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale3 {
+  18% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  26%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes box-move4 {
+  28% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  41%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move4 {
+  28% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  41%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale4 {
+  22% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  30%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale4 {
+  22% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  30%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes box-move5 {
+  32% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  45%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move5 {
+  32% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  45%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale5 {
+  26% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  34%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale5 {
+  26% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  34%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes box-move6 {
+  36% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  49%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move6 {
+  36% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  49%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale6 {
+  30% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  38%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale6 {
+  30% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  38%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes box-move7 {
+  40% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  53%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@keyframes box-move7 {
+  40% {
+    transform: translate(var(--x), var(--y));
+  }
+
+  53%, 52% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, -32px);
+  }
+
+  90%, 100% {
+    transform: translate(0, 188px);
+  }
+}
+
+@-webkit-keyframes box-scale7 {
+  34% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  42%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@keyframes box-scale7 {
+  34% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(0);
+  }
+
+  42%, 100% {
+    transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg) scale(1);
+  }
+}
+
+@-webkit-keyframes ground {
+  0%, 65% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(0);
+  }
+
+  75%, 90% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(1);
+  }
+
+  100% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(0);
+  }
+}
+
+@keyframes ground {
+  0%, 65% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(0);
+  }
+
+  75%, 90% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(1);
+  }
+
+  100% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(0);
+  }
+}
+
+@-webkit-keyframes ground-shine {
+  0%, 70% {
+    opacity: 0;
+  }
+
+  75%, 87% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ground-shine {
+  0%, 70% {
+    opacity: 0;
+  }
+
+  75%, 87% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes mask {
+  0%, 65% {
+    opacity: 0;
+  }
+
+  66%, 100% {
+    opacity: 1;
+  }
+}
+
+@keyframes mask {
+  0%, 65% {
+    opacity: 0;
+  }
+
+  66%, 100% {
+    opacity: 1;
+  }
+}
+</style>
+<div class="loader-container">
+  <div class="loader">
+    <div class="box box0">
+      <div></div>
+    </div>
+    <div class="box box1">
+      <div></div>
+    </div>
+    <div class="box box2">
+      <div></div>
+    </div>
+    <div class="box box3">
+      <div></div>
+    </div>
+    <div class="box box4">
+      <div></div>
+    </div>
+    <div class="box box5">
+      <div></div>
+    </div>
+    <div class="box box6">
+      <div></div>
+    </div>
+    <div class="box box7">
+      <div></div>
+    </div>
+    <div class="ground">
+      <div></div>
+    </div>
+  </div>
+    <!-- 加载提示文字 -->
+    <div style="position: absolute; bottom: 500px; left: 0; right: 0; text-align: center; font-size: 16px; color: #666;">
+      网页正在构建中……
+    </div>
+</div>
+
+<!-- React 挂载点 -->
+<div id="root" style="display: none; opacity: 0; transition: opacity 0.5s ease;"></div>
+
+<!-- Vue 挂载点 -->
+<div id="app" style="display: none; opacity: 0; transition: opacity 0.5s ease;"></div>
+
+<!-- 黑色背景层 -->
+<div id="black-overlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: black; z-index: 100; transition: opacity 0.5s ease;"></div>
+
+
+
+<script>
+  // 黑色背景层状态
+  let isBlackOverlayVisible = false;
+  // 已加载的应用路径前缀
+  let loadedAppPathPrefix = '';
+
+  // 显示黑色背景层
+  function showBlackOverlay() {
+    // 如果黑色背景层已经可见，直接返回
+    if (isBlackOverlayVisible) {
+      console.log('黑色背景层已经可见，跳过显示操作');
+      return;
+    }
+    
+    console.log('显示黑色背景层');
+    isBlackOverlayVisible = true;
+    const overlay = document.getElementById('black-overlay');
+    if (overlay) {
+      overlay.style.display = 'block';
+      setTimeout(() => {
+        overlay.style.opacity = '1';
+      }, 100);
+    }
+  }
+
+  // 隐藏黑色背景层
+  function hideBlackOverlay() {
+    // 如果黑色背景层不可见，直接返回
+    if (!isBlackOverlayVisible) {
+      console.log('黑色背景层不可见，跳过隐藏操作');
+      return;
+    }
+    
+    console.log('隐藏黑色背景层');
+    isBlackOverlayVisible = false;
+    const overlay = document.getElementById('black-overlay');
+    if (overlay) {
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 500);
+    }
+  }
+
+  // 切换黑色背景层状态
+  function toggleBlackOverlay() {
+    if (isBlackOverlayVisible) {
+      hideBlackOverlay();
+    } else {
+      showBlackOverlay();
+    }
+  }
+
+  // 淡出所有挂载点div
+  function fadeOutMountPoints() {
+    return new Promise((resolve) => {
+      const mountPoints = ['root', 'app'];
+      let completed = 0;
+      const total = mountPoints.length;
+      
+      if (total === 0) {
+        resolve();
+        return;
+      }
+      
+      mountPoints.forEach(id => {
+        const mountPoint = document.getElementById(id);
+        if (mountPoint) {
+          // 确保过渡效果存在
+          mountPoint.style.transition = 'opacity 0.5s ease';
+          // 开始淡出
+          mountPoint.style.opacity = '0';
+          // 等待过渡完成后再设置display: none
+          setTimeout(() => {
+            mountPoint.style.display = 'none';
+            mountPoint.innerHTML = '';
+            hideBlackOverlay();
+            
+            completed++;
+            if (completed === total) {
+              resolve();
+            }
+          }, 500);
+        } else {
+          completed++;
+          if (completed === total) {
+            resolve();
+          }
+        }
+      });
+    });
+  }
+
+  // 清理之前加载的脚本和样式
+  function cleanupLoadedResources() {
+    // 重置应用路径前缀
+    loadedAppPathPrefix = '';
+    
+    // 清理通过加载逻辑添加的脚本和样式
+    // 注意：保留加载页自身的样式和脚本
+    const head = document.head;
+    
+    // 清理样式
+    const styles = head.querySelectorAll('link[rel="stylesheet"]');
+    styles.forEach(style => {
+      // 检查是否是加载页自身的样式（通过检查href是否包含background.jpg）
+      if (!style.href.includes('background.jpg')) {
+        try {
+          head.removeChild(style);
+        } catch (error) {
+          // 忽略错误
+        }
+      }
+    });
+    
+    // 清理脚本
+    const scripts = document.querySelectorAll('script[type="module"]');
+    scripts.forEach(script => {
+      // 检查是否是加载页自身的脚本（通过检查是否有src属性）
+      if (script.src) {
+        try {
+          script.parentNode.removeChild(script);
+        } catch (error) {
+          // 忽略错误
+        }
+      }
+    });
+  }
+
+
+
+  // 显示加载动画
+  function showLoader() {
+    const loaderContainer = document.querySelector('.loader-container');
+    if (loaderContainer) {
+      loaderContainer.style.display = 'flex';
+      setTimeout(() => {
+        loaderContainer.style.opacity = '1';
+      }, 100);
+    }
+  }
+
+  // 隐藏加载动画
+  function hideLoader() {
+    const loaderContainer = document.querySelector('.loader-container');
+    if (loaderContainer) {
+      loaderContainer.style.opacity = '0';
+      setTimeout(() => {
+        loaderContainer.style.display = 'none';
+      }, 500);
+    }
+  }
+
+  // 淡入对应框架的挂载点
+  function fadeInApp(framework) {
+    const mountPoint = document.getElementById(framework === 'react' ? 'root' : 'app');
+    if (mountPoint) {
+      // 先设置display为block，确保元素可见
+      mountPoint.style.display = 'block';
+      
+      // 设置其他样式
+      mountPoint.style.position = 'relative';
+      mountPoint.style.top = '0';
+      mountPoint.style.left = '0';
+      mountPoint.style.width = '100%';
+      mountPoint.style.height = '100%';
+      mountPoint.style.zIndex = '200'; // 确保挂载点在黑色背景之上
+      mountPoint.style.opacity = '0'; // 确保初始透明度为0
+      mountPoint.style.transition = 'opacity 0.5s ease'; // 确保过渡效果存在
+      
+      // 等待一小段时间，确保样式生效
+      setTimeout(() => {
+        mountPoint.style.opacity = '1';
+        
+        // 挂载点开始淡入时隐藏加载动画
+        hideLoader();
+        
+        // 挂载点完全淡入后显示黑色背景层，防止特殊动画显示出后面的加载动画
+        setTimeout(() => {
+          showBlackOverlay();
+        }, 500);
+      }, 100);
+    }
+  }
+
+  // 检查地址是否为HTML资源
+  async function checkIfHtmlResource(url) {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html'
+        }
+      });
+      
+      if (!response.ok) {
+        return false;
+      }
+      
+      const contentType = response.headers.get('content-type');
+      return contentType && contentType.includes('text/html');
+    } catch (error) {
+      console.error('Error checking HTML resource:', error);
+      return false;
+    }
+  }
+
+  // 检查HTML内容是否为React或Vue应用
+  function checkFrameworkType(htmlContent) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, 'text/html');
+    const body = doc.body;
+    
+    // 检查body是否只有一个div
+    const divs = body.querySelectorAll('div');
+    if (divs.length !== 1) {
+      return null;
+    }
+    
+    const div = divs[0];
+    const id = div.id;
+    
+    if (id === 'root') {
+      return 'react';
+    } else if (id === 'app') {
+      return 'vue';
+    }
+    
+    return null;
+  }
+
+  // 加载HTML资源并应用head
+  async function loadHtmlResource(url) {
+    try {
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error('Failed to load HTML resource');
+      }
+      
+      const htmlContent = await response.text();
+      
+      // 检测是否是加载页自身
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlContent, 'text/html');
+      const isLoaderPage = doc.querySelector('meta[name="xfy-loader"]');
+      if (isLoaderPage) {
+        return null;
+      }
+      
+      const framework = checkFrameworkType(htmlContent);
+      
+      if (!framework) {
+        return null;
+      }
+      
+      // 提取标题
+      const title = doc.querySelector('title');
+      if (title && title.textContent) {
+        const currentTitle = document.querySelector('title');
+        if (currentTitle) {
+          currentTitle.textContent = title.textContent;
+        }
+      }
+      
+      // 提取favicon
+      const favicon = doc.querySelector('link[rel="icon"]');
+      if (favicon && favicon.href) {
+        const currentFavicon = document.querySelector('link[rel="icon"]');
+        if (currentFavicon) {
+          currentFavicon.href = favicon.href;
+        }
+      }
+      
+      // 提取apple-touch-icon
+      const appleTouchIcon = doc.querySelector('link[rel="apple-touch-icon"]');
+      if (appleTouchIcon && appleTouchIcon.href) {
+        const currentAppleTouchIcon = document.querySelector('link[rel="apple-touch-icon"]');
+        if (currentAppleTouchIcon) {
+          currentAppleTouchIcon.href = appleTouchIcon.href;
+        }
+      }
+      
+      // 提取并加载脚本和样式
+      const scripts = doc.querySelectorAll('script[type="module"]');
+      const links = doc.querySelectorAll('link[rel="stylesheet"]');
+      const loadPromises = [];
+      
+      // 加载样式
+      links.forEach((link) => {
+        const newLink = document.createElement('link');
+        newLink.rel = link.rel;
+        newLink.href = link.href;
+        if (link.crossOrigin) {
+          newLink.crossOrigin = link.crossOrigin;
+        }
+        
+        const loadPromise = new Promise((resolve) => {
+          newLink.onload = resolve;
+          newLink.onerror = resolve;
+        });
+        
+        loadPromises.push(loadPromise);
+        document.head.appendChild(newLink);
+      });
+      
+      // 加载脚本
+      scripts.forEach((script) => {
+        const newScript = document.createElement('script');
+        if (script.type) {
+          newScript.type = script.type;
+        }
+        if (script.src) {
+          newScript.src = script.src;
+          if (script.crossOrigin) {
+            newScript.crossOrigin = script.crossOrigin;
+          }
+          
+          const loadPromise = new Promise((resolve) => {
+            newScript.onload = resolve;
+            newScript.onerror = resolve;
+          });
+          
+          loadPromises.push(loadPromise);
+        } else {
+          newScript.textContent = script.textContent;
+        }
+        
+        document.body.appendChild(newScript);
+      });
+      
+      // 等待所有资源加载完成
+      await Promise.all(loadPromises);
+      
+      // 记录已加载的应用路径前缀
+      if (framework) {
+        const urlObj = new URL(url);
+        // 提取路径前缀，例如 /dash/ 或 /app/
+        const pathParts = urlObj.pathname.split('/').filter(Boolean);
+        if (pathParts.length > 0) {
+          loadedAppPathPrefix = '/' + pathParts[0] + '/';
+        }
+      }
+      
+      return framework;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // 处理地址变更
+  async function handleUrlChange(url, isButtonClick = false) {
+    // 检查是否是加载页自身
+    const urlObj = new URL(url);
+    const currentUrl = new URL(window.location.href);
+    
+    // 检查目标URL是否与当前URL完全相同，且不是按钮点击触发的导航
+    if (!isButtonClick && urlObj.href === currentUrl.href) {
+      return;
+    }
+    
+    // 检查是否为HTML资源
+    const isHtml = await checkIfHtmlResource(url);
+    if (!isHtml) {
+      return;
+    }
+    
+    // 清理之前加载的资源
+    cleanupLoadedResources();
+    
+    // 淡出所有挂载点
+    await fadeOutMountPoints();
+    
+    // 显示加载动画
+    showLoader();
+    
+    // 等待一小段时间，确保加载动画显示
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // 加载HTML资源并应用
+    const framework = await loadHtmlResource(url);
+    
+    if (framework) {
+      // 淡入对应框架的挂载点
+      fadeInApp(framework);
+    } else {
+      // 不是React或Vue应用，直接跳转
+      window.location.href = url;
+    }
+  }
+
+  // 初始化
+  function init() {
+    // 检查当前路径是否为根目录
+    const currentPath = window.location.pathname;
+    
+    // 如果是根目录，跳转到/home
+    if (currentPath === '/') {
+      const homeUrl = window.location.origin + '/home';
+      window.history.pushState({}, '', '/home');
+      handleUrlChange(homeUrl, true);
+    } else {
+      // 处理初始地址
+      handleUrlChange(window.location.href);
+    }
+    
+    // 监听地址变更
+    window.addEventListener('popstate', () => {
+      handleUrlChange(window.location.href);
+    });
+    
+    // 监听所有链接点击
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('a');
+      if (target && target.href) {
+        const url = new URL(target.href);
+        
+        // 检查是否是已加载应用的内部路径
+        if (url.origin === window.location.origin && loadedAppPathPrefix && url.pathname.startsWith(loadedAppPathPrefix)) {
+          return;
+        }
+        
+        // 其他情况，使用我们的加载逻辑
+        if (url.origin === window.location.origin) {
+          e.preventDefault();
+          window.history.pushState({}, '', url.pathname + url.search + url.hash);
+          handleUrlChange(url.href, true);
+        } else {
+          window.location.href = url.href;
+        }
+      }
+    });
+  }
+
+
+
+  // 页面加载完成后初始化
+  window.addEventListener('load', init);
+</script>
+</body>
+</html>
