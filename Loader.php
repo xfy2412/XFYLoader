@@ -46,11 +46,27 @@ if (file_exists($functionFile)) {
     <link rel="stylesheet" href="<?= htmlspecialchars($css) ?>" />
 <?php endforeach; ?>
 <style>
+:root {
+    color-scheme: light dark;
+    --loader-bg: #E8E8E8;
+    --loader-text: #666;
+    --loader-mask: #E8E8E8;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --loader-bg: #1a1a2e;
+        --loader-text: #888;
+        --loader-mask: #1a1a2e;
+    }
+}
+
 body {
-    background-color: #E8E8E8;
+    background-color: var(--loader-bg);
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    transition: background-color 0.3s ease;
 }
 
 .loader-container {
@@ -62,8 +78,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #E8E8E8;
+    background-color: var(--loader-bg);
     z-index: 9999;
+    transition: background-color 0.3s ease;
 }
 
 .loader {
@@ -91,7 +108,7 @@ body {
     position: absolute;
     right: 32%;
     bottom: -11px;
-    background: #e8e8e8;
+    background: var(--loader-mask);
     transform: translateZ(200px) rotate(var(--r));
     animation: mask var(--duration) linear forwards infinite;
 }
@@ -385,7 +402,7 @@ body {
         <div class="box box7"><div></div></div>
         <div class="ground"><div></div></div>
     </div>
-    <div style="position: absolute; bottom: 30%; left: 0; right: 0; text-align: center; font-size: 16px; color: #666;">
+    <div style="position: absolute; bottom: 30%; left: 0; right: 0; text-align: center; font-size: 16px; color: var(--loader-text);">
         网页正在构建中……
     </div>
 </div>
