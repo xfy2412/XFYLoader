@@ -24,12 +24,19 @@ app.use((req, res, next) => {
   });
 });
 
-// 第二层：处理 .html 文件请求，检查是否存在同路径同名的 .function 文件
+// 第二层：处理 .html 和目录请求，检查是否存在同路径同名的 .function 文件
 // 存在时返回加载页，不存在时交给下一层处理
 app.use((req, res, next) => {
-  if (!req.path.endsWith('.html')) return next();
+  let functionRelPath;
 
-  const functionRelPath = req.path.replace(/\.html$/, '.function');
+  if (req.path.endsWith('.html')) {
+    functionRelPath = req.path.replace(/\.html$/, '.function');
+  } else if (req.path.endsWith('/')) {
+    functionRelPath = req.path + 'index.function';
+  } else {
+    return next();
+  }
+
   const functionFullPath = path.join(publicDir, functionRelPath);
 
   if (!fs.existsSync(functionFullPath)) return next();
