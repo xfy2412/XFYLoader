@@ -5,6 +5,7 @@
 用法：
     python tools/parse_html.py public/example-page/index.html
     python tools/parse_html.py path/to/index.html --public-dir public
+    python tools/parse_html.py path/to/index.html --spa
 """
 
 import sys
@@ -99,10 +100,12 @@ def main():
         sys.exit(1)
 
     public_dir = None
+    is_spa = False
     for i, arg in enumerate(sys.argv):
         if arg == '--public-dir' and i + 1 < len(sys.argv):
             public_dir = os.path.abspath(sys.argv[i + 1])
-            break
+        elif arg == '--spa':
+            is_spa = True
 
     if not public_dir:
         public_dir = find_public_dir(html_path)
@@ -119,6 +122,8 @@ def main():
     js_files = resolve(html_dir, public_dir, parser.js_files) if parser.js_files else []
     css_files = resolve(html_dir, public_dir, parser.css_files) if parser.css_files else []
 
+    if is_spa:
+        print('<spa>true</spa>')
     print(f'<title>{parser.title}</title>')
     if icon:
         print(f'<icon>{icon}</icon>')
