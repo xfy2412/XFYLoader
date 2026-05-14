@@ -1,97 +1,145 @@
-# XFY 加载页文档
+# XFY Loader
 
-## 简介
+一个基于 Express + PHP 的服务端加载页系统，为单页应用提供平滑的加载过渡体验。
 
-XFY 加载页是一个通用的单页应用加载页面，专为 React 和 Vue 应用设计，提供平滑的页面过渡效果和加载动画。
+## 架构概览
+
+```
+客户端请求 → Express 服务器
+                │
+                ├─ ─ 第一层：.php 文件 → 直接执行 PHP
+                │
+                ├─ ─ 第二层：.html 文件 → 检查同路径 .function 文件
+                │       ├─ 存在 → 执行 Loader.php，返回加载页
+                │       └─ 不存在 → 交给下一层
+                │
+                └─ ─ 第三层：静态文件服务
+```
 
 ## 功能特点
 
-- **自动路径跳转**：访问根目录时自动跳转到 `/home` 路径（有自定义需求请看第1263行）
-- **框架检测**：自动检测目标页面是 React 应用（挂载点 `id="root"`）还是 Vue 应用（挂载点 `id="app"`）
-- **平滑过渡**：实现页面间的平滑淡入淡出效果
-- **加载动画**：显示美观的 3D 立方体加载动画
-- **资源管理**：自动清理之前加载的脚本和样式，避免冲突
-- **应用内部导航**：已加载的应用内部导航交由应用自身处理，不触发加载动画
-- **标题和图标更新**：只替换目标页面的标题、favicon 和 apple-touch-icon，保持加载页的其他设置
+- **服务端加载页**：通过 PHP 在服务端渲染加载页，注入页面所需的 JS/CSS 资源
+- **自动路由拦截**：访问 `example.html` 时自动寻找同路径的 `example.function`，无侵入式集成
+- **3D 加载动画**：美观的 CSS 3D 立方体加载动画
+- **平滑过渡**：加载完成后自动淡出加载器、淡入应用内容
+- **安全隔离**：`Loader.php` 存放在 `public/` 之外，无法被直接 HTTP 访问
+- **自动脚本生成**：提供 Python 工具自动解析构建产物生成 `.function` 文件
 
-## 实现原理
+## 快速开始
 
-1. **HTML 结构**：包含加载动画容器、React 挂载点、Vue 挂载点和黑色背景层
-2. **CSS 样式**：定义加载动画、容器布局和过渡效果
-3. **JavaScript 逻辑**：
-   - 监听地址变更和链接点击
-   - 检测目标页面的框架类型
-   - 加载目标页面的资源
-   - 实现平滑的页面过渡效果
-   - 管理应用内部导航
+### 安装依赖
 
-## 使用方法
+```bash
+cd XFYLoader
+npm install
+```
 
-1. **部署加载页**：将 `index.html` 部署到网站根目录
-2. **配置应用路径**：确保 React 应用部署在挂载点 `id="root"` 的页面，Vue 应用部署在挂载点 `id="app"` 的页面
-3. **访问应用**：通过加载页访问应用，体验平滑的加载和过渡效果
+### 启动服务器
 
-## 代码结构
+```bash
+npm start
+```
 
-### 主要函数
+服务器默认在 `http://localhost:3009` 启动。
 
-1. **init()**：初始化加载页，设置事件监听器
-2. **handleUrlChange(url, isButtonClick)**：处理地址变更，执行加载流程
-3. **loadHtmlResource(url)**：加载 HTML 资源，提取标题、图标和脚本
-4. **fadeOutMountPoints()**：淡出所有挂载点，准备加载新应用
-5. **fadeInApp(framework)**：淡入对应框架的挂载点，显示新应用
-6. **cleanupLoadedResources()**：清理之前加载的脚本和样式
-7. **checkFrameworkType(htmlContent)**：检查 HTML 内容是否为 React 或 Vue 应用
+### 访问应用
 
-### 核心流程
+将构建好的单页应用（如 Vite 打包产物）放入 `public/` 目录下，例如：
 
-1. **地址变更检测**：监听浏览器地址变更和链接点击
-2. **资源加载**：加载目标页面的 HTML 资源
-3. **框架检测**：检测目标页面是 React 还是 Vue 应用
-4. **资源清理**：清理之前加载的脚本和样式
-5. **页面过渡**：淡出当前应用，显示加载动画，并在确保js和css资源完全加载后，再淡入新应用
-6. **应用内部导航**：已加载的应用内部导航交由应用自身处理
+```
+public/
+  example-page/
+    index.html
+    assets/
+      index-xxx.js
+      index-xxx.css
+```
 
-## 注意事项
+使用工具生成 `.function` 文件：
 
-1. **挂载点要求**：React 应用必须使用 `id="root"` 作为挂载点，Vue 应用必须使用 `id="app"` 作为挂载点（默认情况下均为这么配置的）
-2. **资源路径**：确保应用的脚本和样式路径正确，支持相对路径和绝对路径
-3. **跨域资源**：如果应用加载跨域资源，确保目标服务器支持 CORS
-4. **性能优化**：对于大型应用，建议优化资源加载速度，减少加载时间
-5. **兼容性**：支持现代浏览器，对于旧浏览器可能需要额外的 polyfill
+```bash
+python tools/parse_html.py public/example-page/index.html
+```
 
-## 示例
+生成的输出写入到 `public/example-page/index.function`，之后访问：
 
-### 访问根目录
+```
+http://localhost:3009/example-page/index.html
+```
 
-当访问 `https://example.com/` 时，加载页会自动跳转到 `https://example.com/home`，并显示加载动画。
+即可看到加载页动画，待资源加载完成后自动显示应用内容。
 
-### 切换应用
+## 文件说明
 
-当从 React 应用切换到 Vue 应用时，加载页会：
-1. 淡出当前 React 应用
-2. 显示加载动画
-3. 加载 Vue 应用的资源
-4. 淡入 Vue 应用
+### 核心文件
 
-### 应用内部导航
+| 文件 | 位置 | 说明 |
+|------|------|------|
+| [server.js](server.js) | 项目根目录 | Express 服务器，3 层中间件处理请求 |
+| [Loader.php](Loader.php) | 项目根目录 | PHP 加载页，渲染动画 + 注入资源，放在 public 外防直接访问 |
+| [tools/parse_html.py](tools/parse_html.py) | tools/ | 解析 HTML 构建产物，自动生成 .function 文件 |
 
-在已加载的应用内部导航时，加载页不会显示，导航交由应用自身处理，提供流畅的用户体验。
+### .function 文件格式
 
-## 定制化
+`.function` 文件是描述页面资源的配置文件，使用 XML 风格标签：
 
-### 修改加载动画
+```xml
+<title>页面标题</title>
+<icon>favicon.svg</icon>
+<mount>root</mount>
+<js>assets/index-xxx.js</js>
+<css>assets/index-xxx.css</css>
+```
 
-可以通过修改 `.loader` 相关的 CSS 样式来定制加载动画的外观。
+| 标签 | 说明 | 必填 |
+|------|------|------|
+| `<title>` | 页面标题 | 是 |
+| `<icon>` | 网站图标路径 | 否 |
+| `<mount>` | 挂载点 ID（`root` 或 `app`） | 是（默认 `root`） |
+| `<js>` | JavaScript 文件路径（可多个） | 否 |
+| `<css>` | CSS 文件路径（可多个） | 否 |
 
-### 修改加载提示
+### 工具：parse_html.py
 
-可以修改加载提示文字的内容、样式和位置，以适应不同的应用场景。
+自动解析 Vite / webpack 等构建产物的 `index.html`，提取并输出 `.function` 文件内容。
 
-### 修改自动跳转路径
+```bash
+# 基本用法（自动寻找 public 目录）
+python tools/parse_html.py public/example-page/index.html
 
-可以修改 `init()` 函数中的跳转逻辑，将根目录跳转到其他路径。
+# 指定 public 目录
+python tools/parse_html.py path/to/index.html --public-dir public
+```
 
-## 总结
+## 工作流程
 
-XFY 加载页为单页应用提供了美观、平滑的加载和过渡效果，提升了用户体验。通过自动检测框架类型、管理资源和应用内部导航，加载页能够智能地处理不同类型的页面跳转，为用户提供一致的浏览体验。
+1. 用户访问 `http://localhost:3009/example-page/index.html`
+2. 服务器检测到 `.html` 请求，查找 `public/example-page/index.function`
+3. 找到后执行 `Loader.php`，传入 `.function` 文件路径
+4. Loader.php 解析 `.function` 文件，提取标题、图标、JS、CSS 等信息
+5. 返回完整 HTML：包含 3D 加载动画 + `<link>` 预加载 CSS + `<script>` 加载 JS
+6. 浏览器加载完成后，页面 JS 自动淡出加载器、展示挂载点中的应用内容
+
+## 目录结构
+
+```
+XFYLoader/
+├── Loader.php            # PHP 加载页（安全隔离，不可直接访问）
+├── server.js             # Express 服务器入口
+├── package.json
+├── tools/
+│   └── parse_html.py     # HTML 解析工具
+└── public/
+    ├── index.html         # 欢迎页（可选）
+    └── example-page/      # 示例应用
+        ├── index.html     # 构建产物
+        ├── index.function # 加载页配置文件
+        └── assets/        # 静态资源
+```
+
+## 技术栈
+
+- **Node.js / Express** — Web 服务器
+- **PHP** — 服务端加载页渲染
+- **CSS 动画** — 3D 立方体加载动画
+- **Python** — HTML 解析工具

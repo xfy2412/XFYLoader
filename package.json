@@ -1,0 +1,23 @@
+{
+  "name": "xfyweb-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xfy2412/xfyweb-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xfy2412/xfyweb-server/issues"
+  },
+  "homepage": "https://github.com/xfy2412/xfyweb-server#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
